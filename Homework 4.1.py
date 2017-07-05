@@ -95,6 +95,7 @@ def put_on_shelf(document_number):
         print("Такой полки нет")
         put_on_shelf(document_number)
 
+
 #######################################################################
 # Функция add_new_document
 #######################################################################
@@ -109,6 +110,7 @@ def add_new_document():
     print()
     #Вывод обновленного каталога документов
     show_all()
+
 
 #######################################################################
 # Функция move_document
@@ -127,7 +129,41 @@ def move_document(document_number):
         #Вывод обновленного каталога
         show_all()
 
-    
+
+#######################################################################
+# Функция add_new_shelf
+#######################################################################
+def add_new_shelf():
+    last_shelf = "0"
+    for shelf in directories.keys():
+        if last_shelf < shelf:
+            last_shelf = shelf
+    last_shelf = int(last_shelf)+1
+    directories[str(last_shelf)] = []
+    print()
+    for shelf in directories:
+        print("Полка {0}: {1}".format(shelf, directories[shelf]))
+
+
+#######################################################################
+# Функция delete_document
+#######################################################################
+def delete_document(document_number):
+    shelf = find_shelf(document_number)
+    #Если полки нет - то документ не найден
+    if shelf == None:
+        print("Документ не найден")
+    #Иначе - удаление документа
+    else:
+        for document in documents:
+            if document["number"] == document_number:
+                 documents.remove(document)
+        directories[shelf].remove(document_number)
+        print()
+        #Вывод обновленного каталога
+        show_all()
+
+
 #######################################################################
 # Функция help_user
 #######################################################################
@@ -140,7 +176,7 @@ a - add - добавление нового документа\n\
 d - delete - удаление документа\n\
 m - move - перемещение документа\n\
 as - add shelf - добавление полки\n\
-h - help user - выводит все доступные команды\n\
+h - help - выводит все доступные команды\n\
 e - exit - выход из программы")
 
 
@@ -151,6 +187,7 @@ def user_input():
     #Обработчик команд
     command = input("Введите команду:")
     if command.lower() == "p":
+        #команда people
         document_number = input("Введите номер документа:")
         owners_name = find_owner(document_number)
         if owners_name == None:
@@ -158,8 +195,10 @@ def user_input():
         else:
             print("Имя владельца: " +owners_name)
     elif command.lower() == "l":
+        #команда list
         show_all()
     elif command.lower() == "s":
+        #команда shelf        
         document_number = input("Введите номер документа:")
         shelf_number = find_shelf(document_number)
         if shelf_number == None:
@@ -167,13 +206,24 @@ def user_input():
         else:
             print("Номер полки: " +shelf_number)
     elif command.lower() == "m":
+        #команда move
         document_number = input("Введите номер документа:")
         move_document(document_number)
     elif command.lower() == "a":
+        #команда add
         add_new_document()
+    elif command.lower() == "d":
+        #команда delete
+        document_number = input("Введите номер документа:")
+        delete_document(document_number)
+    elif command.lower() == "as":
+        #команда add shelf
+        add_new_shelf()
     elif command.lower() == "h":
+        #команда для помощи пользователю
         help_user()
     elif command.lower() == "e":
+        #команда для завершения работы
         print("Завершение работы. Нажмите любую клавишу")
         input()
         sys.exit()
