@@ -13,7 +13,7 @@
 #######################################################################
 # Использованные подпрограммы:
 #   1)find_owner - принимает номер документа и выводит ФИО владельца
-#   2)show_all - выводит все имеющиеся документы по полкам
+#   2)show_all - выводит все имеющиеся документы
 #   3)find_shelf - принимает номер документа и выводит номер полки,
 # где он находится  
 #   4)add_new_document - принимает тип документа, номер документа,
@@ -25,13 +25,15 @@
 # документ на заданную полку
 #   7)add_new_shelf - добавлет полку для хранения документов
 #   8)user_input - принимает команды и проверяет их корректность
+#   9)help_user - выводит список доступных команд
 #########################################################################
 
 import sys
 
-###################################
+
+#########################################################################
 # Исходные данные
-###################################
+#########################################################################
 documents = [
         {"type": "passport", "number": "2207 876234", "name": "Василий Гупкин"},
         {"type": "invoice", "number": "11-2", "name": "Геннадий Покемонов"},
@@ -59,11 +61,73 @@ def find_owner(number):
 # Функция show_all
 #######################################################################
 def show_all():
+    #Вывод документов и полок, на которых они находятся
     for index, document in enumerate(documents):
-        print("{0}. {1} - {2} - {3}".format(index+1, document["type"], \
-                                document["number"], document["name"]))
+        shelf_number = find_shelf(document["number"])
+        print("{0}. {1} | {2} | {3} | Номер полки: {4}".format(index+1, document["type"], document["number"], document["name"], shelf_number))
 
 
+#######################################################################
+# Функция find_shelf
+#######################################################################
+def find_shelf(number):
+    #Поиск по полкам
+    for shelf in directories.keys():
+        #Поиск по документам на полке
+        for document in directories[shelf]:
+            #Если документ найден - вернуть номер полки
+            if document == number:
+                return shelf
+
+            
+#######################################################################
+#Функция для добавления документа на существующую полку
+#######################################################################
+def put_on_shelf(document_number):
+    shelf = input("Введите номер полки:")
+    #Проверка существования полки
+    shelf_exists = directories.get(shelf)
+    #Если существует - добавить на полку
+    if shelf_exists != None:
+        directories[shelf].append(document_number)
+    #Иначе - ввод до дех пор, пока не будет введена существующая полка
+    else:
+        print("Такой полки нет")
+        put_on_shelf(document_number)
+
+#######################################################################
+# Функция add_new_document
+#######################################################################
+def add_new_document():
+    owners_name = input("Введите ФИО владельца:")
+    document_type = input("Введите тип документа:")
+    document_number = input("Введите номер документа:")
+    #Добавление документа в каталог документов
+    documents.append({"type":document_type, "number":document_number, "name":owners_name})
+    #Добавление документа на полку
+    put_on_shelf(document_number)
+    print()
+    #Вывод обновленного каталога документов
+    show_all()
+
+#######################################################################
+# Функция move_document
+#######################################################################
+def move_document(document_number):
+    #Нахождение полки, на которой находится документ
+    origin_shelf = find_shelf(document_number)
+    #Если полки нет - то документ не найден
+    if origin_shelf == None:
+        print("Документ не найден")
+    #Иначе - выбор полки для перемещения и само перемещение документа
+    else:
+        put_on_shelf(document_number)
+        directories[origin_shelf].remove(document_number)
+        print()
+        #Вывод обновленного каталога
+        show_all()
+
+    
 #######################################################################
 # Функция help_user
 #######################################################################
@@ -84,17 +148,38 @@ e - exit - выход из программы")
 # Функция user_input
 #######################################################################
 def user_input():
+    #Обработчик команд
     command = input("Введите команду:")
     if command.lower() == "p":
         document_number = input("Введите номер документа:")
         owners_name = find_owner(document_number)
-        print("Имя владельца: " +owners_name)
+        if owners_name == None:
+            print("Документ не найден")
+        else:
+            print("Имя владельца: " +owners_name)
+    elif command.lower() == "l":
+        show_all()
+    elif command.lower() == "s":
+        document_number = input("Введите номер документа:")
+        shelf_number = find_shelf(document_number)
+        if shelf_number == None:
+            print("Документ не найден")
+        else:
+            print("Номер полки: " +shelf_number)
+    elif command.lower() == "m":
+        document_number = input("Введите номер документа:")
+        move_document(document_number)
+    elif command.lower() == "a":
+        add_new_document()
     elif command.lower() == "h":
         help_user()
     elif command.lower() == "e":
-        print("Завершение работы")
+        print("Завершение работы. Нажмите любую клавишу")
         input()
         sys.exit()
+    else:
+        print("Неверная команда. Воспользуйтесь командой \"h\" для вывода списка доступных команд")
+
         
 #######################################################################
 # Функция main
