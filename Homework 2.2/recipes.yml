@@ -1,0 +1,72 @@
+"омлет" :
+  - name : "€йца"
+    quantity : 2
+    measure: "шт"
+  - name : "молоко"
+    quantity : 50
+    measure: "мл"
+  - name : "помидор"
+    quantity : 100
+    measure: "г"
+"стейк" :
+  - name : "гов€дина"
+    quantity : 500
+    measure: "г"
+  - name : "масло"
+    quantity : 20
+    measure: "г"
+  - name : "специи"
+    quantity : 5
+    measure: "г"
+"пельмени" :
+  - name : "тесто"
+    quantity : 300
+    measure: "г"
+  - name : "свинина"
+    quantity : 250
+    measure: "г"
+  - name : "гов€дина"
+    quantity : 250
+    measure: "г"
+  - name : "специи"
+    quantity : 20
+    measure: "г"
+"запечена€ курица" :
+  - name : "курица"
+    quantity : 1500
+    measure: "г"
+  - name : "шампиньоны"
+    quantity : 200
+    measure: "г"
+  - name : "помидор"
+    quantity : 100
+    measure: "г"
+  - name : "специи"
+    quantity : 20
+    measure: "г"
+"окрошка" :
+  - name : "квас"
+    quantity : 700
+    measure: "мл"
+  - name : "картофель"
+    quantity : 150
+    measure: "г"
+  - name : "сыр твердый"
+    quantity : 30
+    measure: "г"
+  - name : "сметана"
+    quantity : 100
+    measure: "мл"
+  - name : "хлеб"
+    quantity : 3
+    measure: "куска"
+"сырники" :
+  - name : "€йца"
+    quantity : 2
+    measure: "шт"
+  - name : "творог"
+    quantity : 500
+    measure: "г"
+  - name : "мука"
+    quantity : 100
+    measure: "г"
