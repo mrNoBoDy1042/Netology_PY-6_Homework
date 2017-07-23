@@ -1,28 +1,51 @@
-menu = {}
-with open('Recipes.txt', encoding='UTF-8') as f:
-    while True:
-        try:
-            # Название блюда
-            name = f.readline().strip('\n')
-
-            # Количесво блюд
-            number_ingredients = int(f.readline().strip('/n'))
-            menu[name] = []
-            # Итерирование по ингредиентам
-            for count in range(number_ingredients):
-                ingredients = {}
-                # Создание словаря ингредиента
-                exec("ingredients['ingredient_name'] = '{0}'\n\
-ingredients['quantity']  = '{1}'\n\
-ingredients['measure']  = '{2}'".format(*f.readline().strip('\n').split(' | ')))
-                # Добавление ингредиента в меню
-                menu[name].append(ingredients)
-            f.readline()
-        except ValueError:
-            break
+################################################################################
+# Task: Получить список меню из файла, спросить у пользователя количество человек
+# и перечень блюд, подсчитать количество необходимых продуктов
+################################################################################
 
 
-def get_shop_list_by_dishes(dishes, person_count):
+################################################################################
+# get_menu - получает список продуктов из файла recipes.txt
+################################################################################
+
+
+def get_menu():
+    menu = {}
+    with open('Recipes.txt', encoding='UTF-8') as f:
+        while True:
+            try:
+                ################################################
+                # Получаем название блюда
+                ################################################
+                name = f.readline().strip('\n')
+
+                ################################################
+                # Количество ингредиентов
+                ################################################
+                number_ingredients = int(f.readline().strip())
+                menu[name] = []
+
+                ################################################
+                # Перебираем ингредиенты необходимые для блюда
+                ################################################
+                for count in range(number_ingredients):
+                    ingredients = {}
+
+                    ##################################################
+                    # Создание словаря ингредиента
+                    ##################################################
+                    exec("ingredients['ingredient_name'] = '{0}'\n\
+    ingredients['quantity']  = '{1}'\n\
+    ingredients['measure']  = '{2}'".format(*f.readline().strip('\n').split(' | ')))
+                    # Добавление ингредиента в меню
+                    menu[name].append(ingredients)
+                f.readline()
+            except ValueError:
+                break
+    create_shop_list(menu)
+
+
+def get_shop_list_by_dishes(dishes, person_count, menu):
     shop_list = {}
     for dish in dishes:
         for ingredient in menu[dish]:
@@ -41,7 +64,7 @@ def print_shop_list(shop_list):
                                   shop_list_item['measure']))
 
 
-def create_shop_list():
+def create_shop_list(menu):
     person_count = int(input('Введите количество человек: '))
     print('Блюда: ', *[dish.title()+', ' for dish in menu], end='.')
     print()
@@ -50,4 +73,4 @@ def create_shop_list():
     print_shop_list(shop_list)
 
 
-create_shop_list()
+get_menu()
