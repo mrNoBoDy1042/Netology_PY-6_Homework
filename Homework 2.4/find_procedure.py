@@ -47,7 +47,8 @@ def find_all_files():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     path_to_files = os.path.join(current_dir, 'migrations')
     os.chdir(path_to_files)
-    return os.listdir()
+    sql_files = list(filter(lambda x: x.endswith('.sql'), os.listdir()))
+    return sql_files
 
 
 #################################################################################
